@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Szorzótábla Gyakorlás</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Ubuntu', sans-serif;
+      background-color: #007BFF; /* Kék háttér */
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.9); /* Fehér háttér átlátszósággal */
+      padding: 20px 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+      color: #333;
+    }
+    h1 {
+      color: #007BFF;
+      margin-bottom: 20px;
+    }
+    p {
+      margin: 10px 0;
+      font-size: 1.2rem;
+    }
+    .result {
+      font-weight: bold;
+      color: #d9534f;
+    }
+    .reaction-time {
+      font-size: 1rem;
+      color: #555;
+    }
+    form {
+      margin-top: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin: 5px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .logout {
+      margin-top: 20px;
+      display: inline-block;
+      text-decoration: none;
+      color: #d9534f;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+    .logout:hover {
+      color: #c9302c;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Szorzótábla Gyakorlás</h1>
+
+  <!-- Gombok a feladatsor indításához és leállításához -->
+  <div>
+    <form action="/home/start" method="post">
+      <button type="submit">Start</button>
+    </form>
+    <form action="/home/stop" method="post">
+      <button type="submit">Stop</button>
+    </form>
+  </div>
+
+  <!-- Statisztikák -->
+  <p><strong>Helyes válaszok:</strong> <span th:text="${stats['correct']}"></span></p>
+  <p><strong>Helytelen válaszok:</strong> <span th:text="${stats['wrong']}"></span></p>
+  <p th:if="${averageTime != null}"><strong>Átlagos reakcióidő:</strong> <span th:text="${averageTime}"></span> másodperc</p>
+
+  <!-- Feladat -->
+  <p th:if="${number1 != null}" style="margin-top: 20px;"><strong>Mennyi <span th:text="${number1}"></span> x <span th:text="${number2}"></span>?</strong></p>
+
+  <!-- Eredmény megjelenítése -->
+  <p th:if="${result != null}" class="result" th:text="${result}"></p>
+  <p th:if="${reactionTime != null}" class="reaction-time">Reakcióidő: <span th:text="${reactionTime}"></span> másodperc</p>
+
+  <!-- Válasz űrlap -->
+  <form action="/home" method="post" th:if="${number1 != null}">
+    <input type="hidden" name="number1" th:value="${number1}">
+    <input type="hidden" name="number2" th:value="${number2}">
+    <label for="answer">Írd be a válaszod:</label>
+    <input type="number" id="answer" name="answer" required>
+    <button type="submit">Beküldés</button>
+  </form>
+
+  <!-- Kijelentkezés -->
+  <a href="/logout" class="logout">Kijelentkezés</a>
+</div>
+</body>
+</html>
